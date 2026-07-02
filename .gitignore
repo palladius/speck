@@ -1,6 +1,8 @@
 /speck
 /bin/
+/out/
 *.test
 .DS_Store
 .resume
 .resume.claudio
+.env

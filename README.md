@@ -1,12 +1,16 @@
 # speck
 
+<p align="center">
+  <img src="docs/logo.jpg" alt="speck logo" width="250"/>
+</p>
+
 Turn a rough idea into a structured `SPEC.md` you can hand to any AI coding
 assistant.
 
 ```
 speck oneshot "a tetris clone with a twist: gravity reverses every 30s"
 ✨ thinking...
-✅ wrote games/tetris-clone-gravity-flip/SPEC.md
+✅ wrote out/games/tetris-clone-gravity-flip/SPEC.md
 ```
 
 ## Why
@@ -43,9 +47,9 @@ speck oneshot "a CLI that dedups photos by perceptual hash"
 ```
 
 The idea can come from several places, in priority order: a positional
-argument, `--file <path>`, piped stdin, a `./IDEA.md` in the current
-directory, or — if none of those are given — an interactive multi-line
-prompt (press Enter twice, or Ctrl-D, to finish).
+argument, `--file <path>`/`-f <path>`, piped stdin, a `./IDEA.md` in the
+current directory, or — if none of those are given — an interactive
+multi-line prompt (press Enter twice, or Ctrl-D, to finish).
 
 ### Interactive
 
@@ -73,8 +77,10 @@ Scans `.txt`, `.md`, and `.html` files under the given directory.
 ## Output
 
 speck decides where to write the spec: `<category>/<slug>/SPEC.md`, e.g.
-`games/tetris-clone/SPEC.md`. Override the base directory with `--base-dir`,
-or force-overwrite an existing spec with `--force`.
+`tetris-clone/SPEC.md` under `games/`. By default this lands under
+`./out/` (gitignored scratch space); override it with `--output-dir`/`-o`
+or the `SPECK_OUTPUT_DIR` environment variable, or force-overwrite an
+existing spec with `--force`.
 
 Every generated `SPEC.md` carries YAML frontmatter for provenance:
 
@@ -82,8 +88,7 @@ Every generated `SPEC.md` carries YAML frontmatter for provenance:
 ---
 speck_version: 0.1
 mode: oneshot
-idea: |
-  a CLI that dedups photos by perceptual hash
+idea_file: input_prompt.md
 created_at: 2026-07-01T15:20:00Z
 model: gemini-flash-latest
 tokens:
@@ -93,8 +98,8 @@ tokens:
 ---
 ```
 
-Long ideas are moved to a sidecar `original_idea.md` instead of being
-embedded inline; interactive sessions also get a `speck_transcript.md`
+The exact idea that produced the spec is always saved alongside it as
+`input_prompt.md`; interactive sessions also get a `speck_transcript.md`
 sidecar with the full Q&A.
 
 ## Flags
@@ -103,9 +108,9 @@ sidecar with the full Q&A.
 |---|---|
 | `--model` | Gemini model to use (default: `gemini-flash-latest`; use `gemini-pro-latest` for a smarter but slower model) |
 | `--api-key` | Overrides `GEMINI_API_KEY` |
-| `--base-dir` | Base directory for the `<category>/<slug>/` output (default: cwd) |
+| `--output-dir`, `-o` | Base directory for the `<category>/<slug>/` output (default: `$SPECK_OUTPUT_DIR` or `./out`) |
 | `--source-of-inspiration`, `-s` | Directory of `.txt`/`.md`/`.html` files to use as supporting context |
-| `--file` | Read the idea from a file |
+| `--file`, `-f` | Read the idea from a file |
 | `--force` | Overwrite an existing `SPEC.md` at the resolved path |
 
 ## Shell completion
