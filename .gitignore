@@ -2,3 +2,5 @@
 /bin/
 *.test
 .DS_Store
+.resume
+.resume.claudio

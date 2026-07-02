@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"speck/internal/ui"
+	"github.com/palladius/speck/internal/ui"
 )
 
 // ideaFallbackFile is checked in the current directory when no idea is

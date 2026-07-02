@@ -85,7 +85,7 @@ mode: oneshot
 idea: |
   a CLI that dedups photos by perceptual hash
 created_at: 2026-07-01T15:20:00Z
-model: gemini-2.5-flash
+model: gemini-flash-latest
 tokens:
   prompt: 1234
   output: 567
@@ -101,7 +101,7 @@ sidecar with the full Q&A.
 
 | Flag | Description |
 |---|---|
-| `--model` | Gemini model to use (default: `gemini-2.5-flash`) |
+| `--model` | Gemini model to use (default: `gemini-flash-latest`; use `gemini-pro-latest` for a smarter but slower model) |
 | `--api-key` | Overrides `GEMINI_API_KEY` |
 | `--base-dir` | Base directory for the `<category>/<slug>/` output (default: cwd) |
 | `--source-of-inspiration`, `-s` | Directory of `.txt`/`.md`/`.html` files to use as supporting context |

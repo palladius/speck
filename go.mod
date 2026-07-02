@@ -1,4 +1,4 @@
-module speck
+module github.com/palladius/speck
 
 go 1.26.4
 

@@ -11,11 +11,11 @@ import (
 
 	sdk "google.golang.org/genai"
 
-	"speck/internal/spec"
+	"github.com/palladius/speck/internal/spec"
 )
 
 // DefaultModel is used when the caller doesn't override the model.
-const DefaultModel = "gemini-2.5-flash"
+const DefaultModel = "gemini-flash-latest"
 
 // Content is a conversation turn (re-exported so callers never need to
 // import the underlying SDK directly).
