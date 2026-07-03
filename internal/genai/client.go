@@ -114,7 +114,23 @@ func (c *Client) GenerateSpec(ctx context.Context, systemInstruction string, con
 	if err := json.Unmarshal([]byte(resp.Text()), &result); err != nil {
 		return SpecResult{}, usage, fmt.Errorf("parse structured response: %w", err)
 	}
+	result.Title = unescapeLiteralNewlines(result.Title)
+	result.SpecBody = unescapeLiteralNewlines(result.SpecBody)
 	return result, usage, nil
+}
+
+// unescapeLiteralNewlines repairs a model quirk seen occasionally in
+// structured JSON output: the string is double-escaped, leaving literal
+// backslash-n/backslash-t sequences after JSON decoding instead of real
+// newlines/tabs.
+func unescapeLiteralNewlines(s string) string {
+	if !strings.Contains(s, "\\n") {
+		return s
+	}
+	s = strings.ReplaceAll(s, "\\r\\n", "\n")
+	s = strings.ReplaceAll(s, "\\n", "\n")
+	s = strings.ReplaceAll(s, "\\t", "\t")
+	return s
 }
 
 // Ask sends a plain-text conversational turn (used for the chat interview

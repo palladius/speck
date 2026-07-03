@@ -31,11 +31,14 @@ assistant.
 - Optionally enrich the prompt with existing notes via
   `--source-of-inspiration <dir>` (scans `.txt`/`.md`/`.html` files as
   secondary context).
-- Auto-decide a sensible `<category>/<slug>/SPEC.md` destination instead of
-  always writing to `./SPEC.md`.
-- Record full provenance in the output file's YAML frontmatter: original
-  idea (or a pointer to it), inspiration sources used, timestamp, model,
-  and token usage.
+- Auto-decide a sensible `<category>/<slug>/SPEC.md` destination under a
+  configurable output directory (`--output-dir`/`-o`, `$SPECK_OUTPUT_DIR`,
+  or `./out` by default) instead of always writing to `./SPEC.md`.
+- Record full provenance in the output file's YAML frontmatter: a pointer to
+  the exact idea (`input_prompt.md`, always written alongside the spec),
+  inspiration sources used, timestamp, model, and token usage.
+- Load `GEMINI_API_KEY` and other config from a `.env` file automatically,
+  so common invocations need no manual `export`.
 - Be genuinely pleasant to use from a terminal: colors, emoji, shell
   autocompletion.
 
@@ -60,6 +63,8 @@ assistant.
   (`category`, `slug`, `title`, `spec_body`) via `responseSchema`, so speck
   can reliably place the file rather than parsing free-form markdown.
 - **Frontmatter**: YAML, via `gopkg.in/yaml.v3`.
+- **Config**: `.env` files are loaded via `internal/dotenv` (explicit
+  environment variables still take precedence).
 
 ## Alternatives Considered
 
@@ -86,9 +91,13 @@ assistant.
   / interactive prompt).
 - `internal/spec/` — frontmatter (de)serialization, body template section
   headers, output path resolution + collision handling.
+- `internal/dotenv/` — minimal `.env` loader.
+- `internal/version/` — single source of truth for `--version` and
+  `CHANGELOG.md` entries.
 - `internal/ui/` — lipgloss styles and emoji constants.
-- `docs/SPECS.md`, `docs/META-SPECS.md`, `README.md` — this document, the
-  interview-philosophy rationale, and user-facing usage docs.
+- `docs/SPECS.md`, `docs/META-SPECS.md`, `README.md`, `CHANGELOG.md` — this
+  document, the interview-philosophy rationale, user-facing usage docs, and
+  version history.
 
 ## Open Questions
 

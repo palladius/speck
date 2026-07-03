@@ -57,7 +57,7 @@ func newChatCmd() *cobra.Command {
 		Args:  cobra.MaximumNArgs(1),
 		RunE:  runChat,
 	}
-	cmd.Flags().StringVar(&chatFile, "file", "", "Read the initial idea from a file")
+	cmd.Flags().StringVarP(&chatFile, "file", "f", "", "Read the initial idea from a file")
 	return cmd
 }
 
@@ -120,7 +120,7 @@ func runChat(cmd *cobra.Command, args []string) error {
 	usage.Output += finalUsage.Output
 	usage.Total += finalUsage.Total
 
-	dir, specPath := spec.ResolvePath(flagBaseDir, result.Category, result.Slug)
+	dir, specPath := spec.ResolvePath(resolveOutputDir(), result.Category, result.Slug)
 	if err := spec.CheckOverwrite(specPath, flagForce); err != nil {
 		return err
 	}

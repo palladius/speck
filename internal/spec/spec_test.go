@@ -6,46 +6,11 @@ import (
 	"testing"
 )
 
-func TestSetIdeaInline(t *testing.T) {
-	var fm Frontmatter
-	sidecar, needsSidecar := fm.SetIdea("a short idea", "original_idea.md")
-	if needsSidecar {
-		t.Fatalf("expected inline storage for short idea")
-	}
-	if sidecar != "" {
-		t.Fatalf("expected no sidecar content, got %q", sidecar)
-	}
-	if fm.Idea != "a short idea" {
-		t.Fatalf("expected idea to be stored inline, got %q", fm.Idea)
-	}
-	if fm.IdeaFile != "" {
-		t.Fatalf("expected no idea_file for short idea, got %q", fm.IdeaFile)
-	}
-}
-
-func TestSetIdeaSidecar(t *testing.T) {
-	var fm Frontmatter
-	long := strings.Repeat("x", MaxInlineIdeaChars+1)
-	sidecar, needsSidecar := fm.SetIdea(long, "original_idea.md")
-	if !needsSidecar {
-		t.Fatalf("expected sidecar storage for long idea")
-	}
-	if sidecar != long {
-		t.Fatalf("expected sidecar content to equal idea text")
-	}
-	if fm.Idea != "" {
-		t.Fatalf("expected idea to be empty when using sidecar, got %q", fm.Idea)
-	}
-	if fm.IdeaFile != "original_idea.md" {
-		t.Fatalf("expected idea_file to be set, got %q", fm.IdeaFile)
-	}
-}
-
 func TestRenderAndParseRoundTrip(t *testing.T) {
 	fm := Frontmatter{
 		SpeckVersion:     "0.1",
 		Mode:             "oneshot",
-		Idea:             "a tetris clone",
+		IdeaFile:         InputPromptFileName,
 		InspirationDir:   "./notes",
 		InspirationFiles: []string{"a.md", "b.txt"},
 		CreatedAt:        "2026-07-01T15:20:00Z",
@@ -67,7 +32,7 @@ func TestRenderAndParseRoundTrip(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ParseFrontmatter failed: %v", err)
 	}
-	if parsedFM.Mode != fm.Mode || parsedFM.Model != fm.Model {
+	if parsedFM.Mode != fm.Mode || parsedFM.Model != fm.Model || parsedFM.IdeaFile != fm.IdeaFile {
 		t.Fatalf("round-tripped frontmatter mismatch: %+v", parsedFM)
 	}
 	if len(parsedFM.InspirationFiles) != 2 {

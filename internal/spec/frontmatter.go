@@ -9,9 +9,9 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// MaxInlineIdeaChars is the longest idea text embedded directly in
-// frontmatter; longer ideas are written to a sidecar file instead.
-const MaxInlineIdeaChars = 2000
+// InputPromptFileName is the sidecar file that always carries the exact
+// prompt (idea, plus any inspiration context) that produced a spec.
+const InputPromptFileName = "input_prompt.md"
 
 // TokenUsage records token accounting for a generation, for provenance.
 type TokenUsage struct {
@@ -24,26 +24,13 @@ type TokenUsage struct {
 type Frontmatter struct {
 	SpeckVersion     string     `yaml:"speck_version"`
 	Mode             string     `yaml:"mode"`
-	Idea             string     `yaml:"idea,omitempty"`
-	IdeaFile         string     `yaml:"idea_file,omitempty"`
+	IdeaFile         string     `yaml:"idea_file"`
 	InspirationDir   string     `yaml:"inspiration_dir,omitempty"`
 	InspirationFiles []string   `yaml:"inspiration_files,omitempty"`
 	TranscriptFile   string     `yaml:"transcript_file,omitempty"`
 	CreatedAt        string     `yaml:"created_at"`
 	Model            string     `yaml:"model"`
 	Tokens           TokenUsage `yaml:"tokens"`
-}
-
-// SetIdea stores idea on the frontmatter, inline if short enough. If the
-// idea is too long to embed inline, it sets IdeaFile instead and returns the
-// idea text for the caller to write to that sidecar file.
-func (f *Frontmatter) SetIdea(idea, ideaFileName string) (sidecarContent string, needsSidecar bool) {
-	if len(idea) <= MaxInlineIdeaChars {
-		f.Idea = idea
-		return "", false
-	}
-	f.IdeaFile = ideaFileName
-	return idea, true
 }
 
 // Render renders the full SPEC.md document: YAML frontmatter, a title, and the body.

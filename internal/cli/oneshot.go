@@ -23,7 +23,7 @@ func newOneshotCmd() *cobra.Command {
 		Args:  cobra.MaximumNArgs(1),
 		RunE:  runOneshot,
 	}
-	cmd.Flags().StringVar(&oneshotFile, "file", "", "Read the idea from a file")
+	cmd.Flags().StringVarP(&oneshotFile, "file", "f", "", "Read the idea from a file")
 	return cmd
 }
 
@@ -62,7 +62,7 @@ func runOneshot(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("generate spec: %w", err)
 	}
 
-	dir, specPath := spec.ResolvePath(flagBaseDir, result.Category, result.Slug)
+	dir, specPath := spec.ResolvePath(resolveOutputDir(), result.Category, result.Slug)
 	if err := spec.CheckOverwrite(specPath, flagForce); err != nil {
 		return err
 	}
