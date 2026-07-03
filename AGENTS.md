@@ -1,5 +1,13 @@
 I'm Riccardo usually I code with Agy/Gemini cLI so its my first non-gemini.md in my life! :)
 
+
+# Auth
+
+Note this claude session is wrapped by my $GIC/bin/claudio-XXXX scripts. 
+1. There's one in python to test that model is working and non fa i capricci.
+2. Then there's the 'claudio' wrapper which exportes the right ENV variables. Notably it points to a different JSON for ADC.
+3. Then there's the authenticate-as-ricc which is needed to create/refresh the JSOn in a non-standard position.
+
 ## Specs
 
 1. ensure you code things by following `docs/META-SPECS.md` and `docs/SPECS.md`
@@ -9,3 +17,4 @@ I'm Riccardo usually I code with Agy/Gemini cLI so its my first non-gemini.md in
 ## code
 
 * Maintain a version somewhere (either in file or inside constants/main code file) and add changes to `CHANGELOG.md` consistently with version changes.
+* Do not exit this git repo "cage" for coding. Seek approval if needed.
